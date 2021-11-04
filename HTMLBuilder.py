@@ -44,7 +44,8 @@ class IndexPage(HTMLTemplate):
         pdf_list = ""
         for pdf_file in pdf_files:
             pdf_file_address = os.path.join(self.address, pdf_file.name_stripped)
-            pdf_list += f"\t<li><form action=\"{pdf_file_address}\"><input type=\"submit\" value=\"{pdf_file.name}\" /></form></li>\n"
+            pdf_list += f"\t<li><form action=\"{pdf_file_address}\">" \
+                        f"<input type=\"submit\" value=\"{pdf_file.name}\" /></form></li>\n"
         self.html_page = self.html_page.format_map({"pdf_list": pdf_list})
 
 
@@ -56,10 +57,10 @@ class PDFPage(HTMLTemplate):
 
 
 if __name__ == '__main__':
-    address = "127.0.0.1:8888"
+    _address = "127.0.0.1:8888"
     html_builder = HTMLBuilder(address="127.0.0.1:8888")
     _index_page = html_builder.build_index_page()
     print(f"{_index_page}")
-    pdf_file_path = os.path.join(address, "file-sample_150kB")
+    pdf_file_path = os.path.join(_address, "file-sample_150kB")
     _pdf_page = html_builder.build_pdf_page(pdf_file_path)
     print(f"{_pdf_page}")
