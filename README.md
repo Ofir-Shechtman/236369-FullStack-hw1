@@ -11,3 +11,4 @@ This is our first homework assignment for our full-stack course in the Technion,
 - https://pythonprogramming.net/sockets-tutorial-python-3/
 - https://www.codementor.io/@joaojonesventura/building-a-basic-http-server-from-scratch-in-python-1cedkg0842
 - https://pymotw.com/3/http.server/
+- HTML Editor: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_editors

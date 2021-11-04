@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Landing Page</title>
+</head>
+<body>
+
+<h1>Landing Page</h1>
+<p>Welcome to the landing page!</p>
+<p>Choose a .pdf file to generate a wordcloud from</p>
+<ul style="line-height: 2">
+{pdf_list}
+</ul>
+
+</body>
+</html>
+
+
