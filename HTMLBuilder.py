@@ -1,7 +1,8 @@
 import os.path
-
 from FileManager import FileManager, PDFFile
 from WordCloudGenerator import WordCloudGenerator
+
+
 
 PDFS_DIR = "pdfs"
 IMAGES_DIR = "images"

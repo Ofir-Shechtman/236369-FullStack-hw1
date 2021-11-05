@@ -1,6 +1,5 @@
 from wordcloud import WordCloud
 
-
 '''
 This function generates a word cloud from a string, and saves it as a .png file.
 

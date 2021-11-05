@@ -1,4 +1,3 @@
-from http.server import BaseHTTPRequestHandler
 from hw1_utils import decode_http
 from HTMLBuilder import HTMLBuilder
 from enum import Enum
@@ -30,6 +29,12 @@ class HTTPHandler:
             self.handle()
         except HTTPConnectionError as e:
             self.send_response(e.status_code)
+            self.end_headers()
+            self.wfile.flush()
+        except Exception:
+            self.send_response(HTTPStatusCodes.INTERNAL_SERVER_ERROR)
+            self.end_headers()
+            self.wfile.flush()
         finally:
             self.wfile.close()
 
@@ -43,10 +48,10 @@ class HTTPHandler:
         request = decoded_http['Request'].split()
         if len(request) != 3:
             raise HTTPConnectionError(HTTPStatusCodes.INTERNAL_SERVER_ERROR)
-        request_version = request[-1]
+        self.command, self.path, request_version = request
         if request_version != PROTOCOL_VERSION:
             raise HTTPConnectionError(HTTPStatusCodes.INTERNAL_SERVER_ERROR)
-        self.command, self.path = request[:2]
+        # self.path = urlparse(raw_path).path
 
     def send_response(self, code):
         """Send the response header only."""
@@ -79,7 +84,6 @@ class HTTPHandler:
                 self.send_response(HTTPStatusCodes.OK)
                 self.send_header('Content-Type', 'image/png')
                 self.send_header("Accept-Ranges", "bytes")
-                return
             else:
                 if self.path == '/':
                     message = HTMLBuilder.build_index_page()
