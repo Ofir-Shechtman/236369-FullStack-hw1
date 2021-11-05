@@ -1,14 +1,19 @@
 from typing import Tuple
 import os
 
+class NoPDF(BaseException):
+    pass
+
 
 class PDFFile:
     def __init__(self, path):
         if not (path.endswith(".pdf") and os.path.exists(path)):
-            raise Exception
+            raise NoPDF
         self._path = path
         self._name = os.path.basename(path)
         self._name_stripped = self._name.split(".pdf")[0]
+
+
 
     @property
     def path(self):

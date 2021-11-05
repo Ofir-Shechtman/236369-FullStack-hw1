@@ -10,14 +10,14 @@ with open(STOPWORDS) as f:
 class WordCloudGenerator:
 
     @staticmethod
-    def extract_words(pdf_name):
+    def extract_words(pdf_name) -> str:
         text = high_level.extract_text(pdf_name)
         text = re.sub(r'[^a-zA-Z\s]', '', text.lower())
         words_list = [word for word in text.split() if word not in stopwords]
         return ' '.join(words_list)
 
     @classmethod
-    def generate_wordcloud_to_file(cls, pdf_name, picture_name):
+    def generate_wordcloud_to_file(cls, pdf_name, picture_name) -> None:
         generate_wordcloud_to_file(cls.extract_words(pdf_name), picture_name)
 
 
