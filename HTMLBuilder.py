@@ -18,16 +18,18 @@ class HTMLBuilder:
 
     @staticmethod
     def build_pdf_page(pdf_address) -> bytes:
-        pdf_path = os.path.join(PDFS_DIR, f"{os.path.basename(pdf_address)}.pdf")
+        pdf_path = os.path.join(PDFS_DIR, f"{os.path.relpath(pdf_address,os.sep)}.pdf")
         pdf_file = PDFFile(path=pdf_path)
         image_path = os.path.join(IMAGES_DIR, f"{pdf_file.name_stripped}.png")
+        os.makedirs(os.path.dirname(image_path), exist_ok=True)
         WordCloudGenerator.generate_wordcloud_to_file(pdf_file.path, image_path)
         pdf_page = PDFPage(PDF_PAGE_TEMPLATE, pdf_file, image_path)
         return pdf_page.html
 
     @staticmethod
     def build_image_page(image_address) -> bytes:
-        with open(image_address[1:], 'rb') as image:
+        image_address = image_address[image_address.find(IMAGES_DIR):]
+        with open(image_address, 'rb') as image:
             message = image.read()
         return message
 

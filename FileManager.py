@@ -1,5 +1,7 @@
 from typing import Tuple
 import os
+from glob import glob
+import pathlib
 
 
 class PDFFile:
@@ -7,7 +9,8 @@ class PDFFile:
         if not (path.endswith(".pdf") and os.path.exists(path)):
             raise Exception("no pdf")
         self._path = path
-        self._name = os.path.basename(path)
+        p = pathlib.Path(self._path)
+        self._name = str(pathlib.Path(*p.parts[1:]))
         self._name_stripped = self._name.split(".pdf")[0]
 
     @property
@@ -26,7 +29,9 @@ class PDFFile:
 class FileManager:
     @staticmethod
     def get_pdf_files(pdfs_dir) -> Tuple[PDFFile]:
-        return tuple([PDFFile(os.path.join(pdfs_dir, file)) for file in os.listdir(pdfs_dir) if file.endswith(".pdf")])
+        search_path = os.path.join(pdfs_dir, "**", "*.pdf")
+        pdfs = tuple([PDFFile(file) for file in glob(search_path, recursive=True)])
+        return pdfs
 
     @staticmethod
     def exists(path) -> bool:
