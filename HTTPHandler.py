@@ -4,7 +4,7 @@ from HTMLBuilder import HTMLBuilder
 from enum import Enum
 
 PROTOCOL_VERSION = 'HTTP/1.1'
-RECV_BUFFER = 1024
+RECV_BUFFER = 4096
 
 
 class HTTPStatusCodes(Enum):
@@ -44,7 +44,7 @@ class HTTPHandler:
         if len(request) != 3:
             raise HTTPConnectionError(HTTPStatusCodes.INTERNAL_SERVER_ERROR)
         request_version = request[-1]
-        if request_version != 'HTTP/1.1':
+        if request_version != PROTOCOL_VERSION:
             raise HTTPConnectionError(HTTPStatusCodes.INTERNAL_SERVER_ERROR)
         self.command, self.path = request[:2]
 
@@ -87,8 +87,13 @@ class HTTPHandler:
                     message = HTMLBuilder.build_pdf_page(self.path)
                 self.send_response(HTTPStatusCodes.OK)
                 self.send_header('Content-Type', 'text/html')
-        except any:
+        except HTTPConnectionError as e:
+            self.send_response(e.status_code)
+        except Exception:
             self.send_response(HTTPStatusCodes.NOT_FOUND)
+            self.send_header('Content-Type', 'text/html')
+            with open(r"error_page\404.html", 'r') as html:
+                message = html.read().encode('utf-8')
         finally:
             self.end_headers()
             self.wfile.write(message)
