@@ -1,6 +1,7 @@
 from hw1_utils import decode_http
 from HTMLBuilder import HTMLBuilder
 from enum import Enum
+from urllib.parse import urlparse, unquote
 
 PROTOCOL_VERSION = 'HTTP/1.1'
 RECV_BUFFER = 4096
@@ -48,10 +49,10 @@ class HTTPHandler:
         request = decoded_http['Request'].split()
         if len(request) != 3:
             raise HTTPConnectionError(HTTPStatusCodes.INTERNAL_SERVER_ERROR)
-        self.command, self.path, request_version = request
+        self.command, raw_path, request_version = request
         if request_version != PROTOCOL_VERSION:
             raise HTTPConnectionError(HTTPStatusCodes.INTERNAL_SERVER_ERROR)
-        # self.path = urlparse(raw_path).path
+        self.path = unquote(urlparse(raw_path).path)
 
     def send_response(self, code):
         """Send the response header only."""

@@ -50,8 +50,9 @@ class IndexPage(HTMLTemplate):
         super().__init__(template)
         pdf_list = ""
         for pdf_file in pdf_files:
-            pdf_list += f"<li><a href={pdf_file.name_stripped}><button type=button>{pdf_file.name}</button></a></li>"
+            pdf_list += f'<li><a href="{pdf_file.name_stripped}"><button type=button>{pdf_file.name}</button></a></li>'
         self.html_page = self.html_page.format_map({"pdf_list": pdf_list})
+        print(self.html_page)
 
 
 class PDFPage(HTMLTemplate):
