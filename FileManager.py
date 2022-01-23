@@ -11,7 +11,7 @@ class PDFFile:
         self._path = path
         p = pathlib.Path(self._path)
         self._name = str(pathlib.Path(*p.parts[1:]))
-        self._name_stripped = self._name.rstrip(".pdf")
+        self._name_stripped = self.name.replace('.pdf', '')
 
     @property
     def path(self):
